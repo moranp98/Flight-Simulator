@@ -1,7 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-	
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
-	<!-- TODO Add Nodes -->
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="292.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
+   <center>
+      <BorderPane prefHeight="292.0" prefWidth="784.0" BorderPane.alignment="CENTER">
+         <top>
+            <HBox prefHeight="30.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" text="Connect">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Load data">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Caculate path">
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <RadioButton mnemonicParsing="false" text="Autopilot">
+                     <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="90.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" text="Manual">
+                     <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <left>
+            <Canvas height="255.0" width="302.0" BorderPane.alignment="CENTER" />
+         </left>
+         <center>
+            <TextField alignment="TOP_LEFT" maxWidth="-Infinity" prefHeight="250" prefWidth="221.0" BorderPane.alignment="CENTER" />
+         </center>
+         <right>
+            <Canvas height="234.0" width="278.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="15.0" />
+               </BorderPane.margin>
+            </Canvas>
+         </right>
+      </BorderPane>
+   </center>
 </BorderPane>
