@@ -7,7 +7,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import application.Joystick?>
+<?import application.Simulator?>
 
 <BorderPane prefHeight="292.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
    <center>
@@ -62,17 +65,17 @@
             </HBox>
          </top>
          <left>
-            <Canvas height="255.0" width="302.0" BorderPane.alignment="CENTER" />
+            <Simulator fx:id="simulatorData" height="255.0" width="302.0" BorderPane.alignment="CENTER" />
          </left>
          <center>
             <TextField alignment="TOP_LEFT" maxWidth="-Infinity" prefHeight="250" prefWidth="221.0" BorderPane.alignment="CENTER" />
          </center>
          <right>
-            <Canvas height="234.0" width="278.0" BorderPane.alignment="CENTER">
+            <Joystick fx:id="joystick" prefHeight="257.0" prefWidth="237.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets right="15.0" />
+                  <Insets right="20.0" />
                </BorderPane.margin>
-            </Canvas>
+            </Joystick>
          </right>
       </BorderPane>
    </center>

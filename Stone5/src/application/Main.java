@@ -21,7 +21,7 @@ public class Main extends Application {
 //		    circle1.getStrokeDashArray().addAll(2d, 21d);
 //		    circle1.setStrokeWidth(3);
 //		    root.getChildren().addAll(circle1);
-			Scene scene = new Scene(root,824,300);
+			Scene scene = new Scene(root,900,320);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
