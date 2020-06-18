@@ -102,47 +102,6 @@ public class Joystick extends Pane{
 
 		});
 		
-//		joy.setOnDragDetected(new EventHandler<MouseEvent>() {
-//
-//			@Override
-//			public void handle(MouseEvent event) {
-//			
-//
-//                System.out.print("Dragging...");
-//                System.out.println("From row: " + joy.getCenterX() + " From col: " + joy.getCenterY());
-//
-//                double x=event.getX();
-//                double y=event.getY();
-//                
-//                double addx,addy;
-//                
-//                if(x<origX)
-//                	addx=-40;
-//                else
-//                	addx=40;
-//                if(y<origY)
-//                	addy=-40;
-//                else 
-//                	addy=40;
-//                
-//                joy.setCenterX(origX+addx);
-//                joy.setCenterY(origY+addy);
-//                
-//                joy.setOnMouseReleased(new EventHandler<Event>() {
-//
-//					@Override
-//					public void handle(Event event) {
-//						joy.setCenterX(origX);
-//						joy.setCenterY(origY);
-//						
-//					}
-//				});
-//
-//
-//                event.consume();
-//				
-//			}
-//		});
 		
 	}
 }

@@ -18,7 +18,7 @@
          <top>
             <HBox prefHeight="30.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button mnemonicParsing="false" text="Connect">
+                  <Button fx:id="connectBtn" mnemonicParsing="false" text="Connect" onAction="#connect">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -36,21 +36,21 @@
                   </Button>
                   <Button mnemonicParsing="false" text="Caculate path">
                      <HBox.margin>
-                        <Insets right="50.0" />
+                        <Insets right="90.0" />
                      </HBox.margin>
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Button>
-                  <RadioButton mnemonicParsing="false" text="Autopilot">
+                  <RadioButton fx:id="auto" mnemonicParsing="false" text="Autopilot" onAction="#autoSelected">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
                      <HBox.margin>
-                        <Insets right="90.0" />
+                        <Insets right="130.0" />
                      </HBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Manual">
+                  <RadioButton fx:id="manual" mnemonicParsing="false" text="Manual" selected="true" onAction="#manSelected">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
