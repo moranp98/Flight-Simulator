@@ -12,7 +12,7 @@ import java.util.Random;
 public class SimulatorServer {
 
 	public boolean stop=false;
-	private int x,y,heading,speed,alt,port;
+	private int x,y,heading=360,speed,alt,port;
 	
 	
 	public SimulatorServer() {

@@ -35,7 +35,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" text="Caculate path">
+                  <Button mnemonicParsing="false" text="calculate path" onAction="#calculate">
                      <HBox.margin>
                         <Insets right="90.0" />
                      </HBox.margin>
@@ -48,7 +48,7 @@
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="150" right="130.0" />
+                        <Insets left="170" right="300" />
                      </HBox.margin>
                   </RadioButton>
                   <RadioButton fx:id="manual" mnemonicParsing="false" selected="true" text="Manual" onAction="#manSelected">
@@ -67,6 +67,9 @@
          </top>
          <left>
             <Simulator fx:id="simulatorData" height="500" width="500" BorderPane.alignment="CENTER" />
+            <BorderPane.margin>
+            		<Insets right="50"/>
+            	</BorderPane.margin>
          </left>
          <center>
             <TextField alignment="TOP_LEFT" prefHeight="250" prefWidth="221.0" BorderPane.alignment="CENTER" />

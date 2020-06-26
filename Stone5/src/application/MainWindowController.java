@@ -1,6 +1,15 @@
 package application;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -21,12 +30,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
 
-public class MainWindowController implements Initializable{
+public class MainWindowController implements Initializable, Observer{
 	
 	@FXML
 	Simulator simulatorData;
@@ -36,16 +47,25 @@ public class MainWindowController implements Initializable{
 	RadioButton manual,auto;
 	@FXML
 	Button connectBtn;
+	@FXML
+	Label heading,alt,speed;
+	
+	ViewModel vm;
+
+	public void setVm(ViewModel vm) {
+		this.vm = vm;
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		simulatorData.setSimulatordata(null);
+		simulatorData.setSimulatorData(null,(double)0,(double)0,(double)0);
 		joystick.joystick();
-		
 	}
 	
 	 String ipt="";
 	 String portt="";
+	 int porti;
 	
 	public void manSelected() {
 		auto.setSelected(false);
@@ -59,6 +79,12 @@ public class MainWindowController implements Initializable{
 	}
 	
 	public void connect() {
+
+		heading.textProperty().bind(vm.heading.asString());
+		alt.textProperty().bind(vm.alt.asString());
+		speed.textProperty().bind(vm.speed.asString());
+		
+		
 		final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
 
@@ -80,10 +106,10 @@ public class MainWindowController implements Initializable{
         
         
         Label l2=new Label("port");
-        l1.setFont(Font.font(15));
+        l2.setFont(Font.font(15));
         
         TextField port=new TextField();
-        ip.maxWidth(10);
+        port.maxWidth(10);
         keyPressedPor(port);
         
         
@@ -176,10 +202,99 @@ public class MainWindowController implements Initializable{
 			public void handle(ActionEvent event) {
 				ipt=ip.getText();
 				portt=port.getText();
-				
+				vm.connect(ipt, Integer.parseInt(portt));
 			}
 		});
 	}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	
+	public void load() {
+		FileChooser fc=new FileChooser();
+		List<String[]> lines = new ArrayList<String[]>();
+		double lat,lon,lot;
+		fc.setTitle("open csv file");
+		//fc.setInitialDirectory(new File("./resources"));
+		fc.setSelectedExtensionFilter(new ExtensionFilter("cvs","cvs"));
+		File cho=fc.showOpenDialog(heading.getScene().getWindow());
+		try {
+			BufferedReader buf=new BufferedReader(new FileReader(cho));
+			String row=null;
+			String[]data;
+			try {
+				row=buf.readLine();
+				data=row.split(",");
+				lon=Double.parseDouble(data[0]);
+				lat=Double.parseDouble(data[1]);
+				row=buf.readLine();
+				data=row.split(",");
+				lot=Double.parseDouble(data[0]);
+				
+				//System.out.println("the pos is "+lat+","+lon+" and the lot is "+lot);
+				
+				row=null;
+				while((row=buf.readLine())!=null) {
+					lines.add(row.split(","));
+				}
+				String[][] array = new String[lines.size()][0];
+				lines.toArray(array);
+				simulatorData.setSimulatorData(array, lat, lon, lot);
+				
+				buf.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+	public void calculate() {
+		if(simulatorData.picked==false)
+			return;
+		
+		simulatorData.pressedBtn=true;
+		final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        VBox texts=new VBox(20);
+        texts.setAlignment(Pos.CENTER);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.setAlignment(Pos.CENTER);
+        TextField port=new TextField();
+        Label l2=new Label("port");
+        l2.setFont(Font.font(15));
+        dialogVbox.getChildren().addAll(l2);
+        VBox.setMargin(l2, new Insets(1, 30, 1, 5));
+        VBox.setMargin(port, new Insets(1, 90, 1, 1));
+        texts.getChildren().addAll(port);
+        Button btn=new Button("connect to server");
+        btn.setAlignment(Pos.CENTER);
+        BorderPane p=new BorderPane(texts, null, null, btn, dialogVbox);
+        BorderPane.setMargin(btn, new Insets(1, 1, 1, 70));
+        Scene dialogScene = new Scene(p, 300, 200);
+        dialog.setScene(dialogScene);
+        dialog.setTitle("connect to server");
+        dialog.show();
+       btn.setOnAction(new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			porti=Integer.parseInt(port.getText());
+			int[][] sol=vm.calculate(simulatorData.simulatorData, simulatorData.cRow, simulatorData.cCol, simulatorData.gx, simulatorData.gy,porti);
+		    simulatorData.drawLine(sol);
+		    dialog.close();
+			
+		}
+	});
+		
+	}
 }
