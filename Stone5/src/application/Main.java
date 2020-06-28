@@ -17,7 +17,7 @@ public class Main extends Application {
 			ViewModel vm=new ViewModel(sm);
 			sm.addObserver(vm);		
 			FXMLLoader fx=new FXMLLoader();
-			BorderPane root = fx.load(getClass().getResource("Mainn.fxml").openStream());
+			BorderPane root = fx.load(getClass().getResource("Mainn5.fxml").openStream());
 			MainWindowController mwc=fx.getController();
 			mwc.setVm(vm);
 			vm.addObserver(mwc);

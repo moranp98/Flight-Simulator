@@ -57,4 +57,9 @@ public class ViewModel extends Observable implements Observer {
 		
 		return arr;
 	}
+
+
+	public void autopilot(String intr) {
+		
+	}
 }

@@ -3,13 +3,11 @@ package application;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Simulator extends Canvas{
@@ -20,6 +18,7 @@ public class Simulator extends Canvas{
 	double x,y;
 	boolean picked=false,pressedBtn=false;
 	int gx,gy;
+	double w,h;
 	
 	public void setSimulatorData(String[][] simulatorData, double lat, double lon, double lot) {
 		this.simulatorData = simulatorData;
@@ -35,8 +34,8 @@ public class Simulator extends Canvas{
 		if(simulatorData!=null) {
 			double W=getWidth();
 			double H=getHeight();
-			double w=W/(simulatorData[0].length/8);
-			double h=H/(simulatorData.length/8);
+			w=W/(simulatorData[0].length/8);
+			h=H/(simulatorData.length/8);
 			
 			GraphicsContext gc=getGraphicsContext2D();
 			
@@ -65,28 +64,6 @@ public class Simulator extends Canvas{
 			params.setFill(Color.TRANSPARENT);
 			Image rotatedImage = iv.snapshot(params, null);
 			gc.drawImage(rotatedImage, cCol, cRow,w,h);
-			this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-				@Override
-				public void handle(MouseEvent event) {
-					gc.clearRect(0, 0, w, h);
-					redraw();
-					Image img=null;
-					try {
-						img=new Image(new FileInputStream("./resources/X.png"));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						System.out.println("bla");
-					}
-					x=event.getX();
-					y=event.getY();
-					gc.drawImage(img, x, y,w,h);
-					picked=true;
-					System.out.println("i is "+y/h+" j is "+x/w);
-					gx=(int) (y/h);
-					gy=(int) (x/w);
-				}
-			});
 		}
 	}
 	
@@ -98,6 +75,7 @@ public class Simulator extends Canvas{
 		GraphicsContext gc=getGraphicsContext2D();
 		gc.clearRect(0, 0, w, h);
 		redraw();
+		drawX(x, y);
 		Image img=null;
 		try {
 			img=new Image(new FileInputStream("./resources/line4.png"));
@@ -107,8 +85,30 @@ public class Simulator extends Canvas{
 		}
 		for(int i=0;i<flightPath.length;i++)
 			for(int j=0;j<flightPath[i].length;j++)
-				if(flightPath[i][j]==1)
+				if(flightPath[i][j]==1) {
+					if(i==gx && j==gy)
+						break;
 					gc.drawImage(img, j*w, i*h, w, h);
+				}
 	}
 	
+	public void drawX(double ex,double ey) {
+		GraphicsContext gc=getGraphicsContext2D();
+		gc.clearRect(0, 0, w, h);
+		redraw();
+		Image img=null;
+		try {
+			img=new Image(new FileInputStream("./resources/X.png"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("bla");
+		}
+		x=ex;
+		y=ey;
+		gc.drawImage(img, x, y,w,h);
+		picked=true;
+		System.out.println("i is "+y/h+" j is "+x/w);
+		gx=(int) (y/h);
+		gy=(int) (x/w);
+	}
 }

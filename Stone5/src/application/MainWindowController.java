@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,9 +25,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -49,6 +52,8 @@ public class MainWindowController implements Initializable, Observer{
 	Button connectBtn;
 	@FXML
 	Label heading,alt,speed;
+	@FXML
+	TextArea text;
 	
 	ViewModel vm;
 
@@ -61,6 +66,17 @@ public class MainWindowController implements Initializable, Observer{
 	public void initialize(URL location, ResourceBundle resources) {
 		simulatorData.setSimulatorData(null,(double)0,(double)0,(double)0);
 		joystick.joystick();
+		simulatorData.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				simulatorData.drawX(event.getX(), event.getY());
+				if(simulatorData.pressedBtn) {
+					int[][] sol=vm.calculate(simulatorData.simulatorData, simulatorData.cRow, simulatorData.cCol, simulatorData.gx, simulatorData.gy,porti);
+					simulatorData.drawLine(sol);
+				}
+			}
+		});
 	}
 	
 	 String ipt="";
@@ -75,6 +91,9 @@ public class MainWindowController implements Initializable, Observer{
 	public void autoSelected() {
 		manual.setSelected(false);
 		joystick.setDisable(true);
+		if(!text.getText().equals("")) {
+			vm.autopilot(text.getText());
+		}
 
 	}
 	
@@ -297,4 +316,25 @@ public class MainWindowController implements Initializable, Observer{
 	});
 		
 	}
+
+	public void loadText() {
+		FileChooser fc=new FileChooser();
+		List<String> lines = new ArrayList<String>();
+		fc.setTitle("open text file");
+		fc.setSelectedExtensionFilter(new ExtensionFilter("TEXT files (*.txt)", "*.txt"));
+		File cho=fc.showOpenDialog(heading.getScene().getWindow());
+		 try {
+		      Scanner myReader = new Scanner(cho);
+		      while (myReader.hasNextLine()) {
+		        String data = myReader.nextLine();
+		        //t+="\r\n"+data;
+		        //System.out.println(t);
+		        //System.out.println("------");
+		        text.appendText("\r\n"+data);
+		      }
+		      myReader.close();
+		    } catch (FileNotFoundException e) {
+		      
+		    }
+		  }
 }
