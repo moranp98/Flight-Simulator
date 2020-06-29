@@ -37,9 +37,11 @@ public class ConnectCommand implements Command {
 				while(symTable.get("stopC")==0.0){
 					if(!symTable.containsKey("SimX"))
 						continue;
-					out.println("set SimX "+symTable.get("SimX"));
-					out.println("set SimY "+symTable.get("SimY"));
-					out.println("set SimZ "+symTable.get("SimZ"));
+					out.println("set /controls/flight/speedbrake "+symTable.get("/controls/flight/speedbrake"));
+					out.println("set /controls/engines/current-engine/throttle "+symTable.get("/controls/engines/current-engine/throttle"));
+					out.println("set /controls/flight/rudder "+symTable.get("/controls/flight/rudder"));
+					out.println("set /controls/flight/aileron "+symTable.get("/controls/flight/aileron"));
+					out.println("set /controls/flight/elevator "+symTable.get("/controls/flight/elevator"));
 					out.flush();
 					try {Thread.sleep(100);} catch (InterruptedException e1) {}
 				}

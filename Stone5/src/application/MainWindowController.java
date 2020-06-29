@@ -319,7 +319,6 @@ public class MainWindowController implements Initializable, Observer{
 
 	public void loadText() {
 		FileChooser fc=new FileChooser();
-		List<String> lines = new ArrayList<String>();
 		fc.setTitle("open text file");
 		fc.setSelectedExtensionFilter(new ExtensionFilter("TEXT files (*.txt)", "*.txt"));
 		File cho=fc.showOpenDialog(heading.getScene().getWindow());

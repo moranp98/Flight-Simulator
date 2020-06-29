@@ -59,7 +59,9 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 
-	public void autopilot(String intr) {
-		
+	public double autopilot(String intr) {
+		intr.replace('"', ' ');
+		String in[]=intr.split("\r\n");
+		return sm.autopilot(in);
 	}
 }

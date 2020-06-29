@@ -10,7 +10,10 @@ import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
+import test.MyInterpreter;
+import test.Simulator;
 import test.TestSetter;
 
 public class SimulatorModel extends Observable {
@@ -18,7 +21,8 @@ public class SimulatorModel extends Observable {
 	static boolean stop=false;
 	Random r=new Random();
 	int PORT=5000+r.nextInt(1000);
-	String command=null;
+	public AtomicReference<String> command=new AtomicReference<String>(null);
+	public AtomicReference<String> val=new AtomicReference<String>(null);
 	public SimulatorModel() {
 		plane=new ConcurrentHashMap<String, Float>();
 		plane.put("heading", (float) 0);
@@ -70,9 +74,17 @@ public class SimulatorModel extends Observable {
 		try {
 			Socket sck=new Socket(ip, port);
 			PrintWriter out=new PrintWriter(sck.getOutputStream());
-			while(command!=null) {
-				out.println(command);
+			if(command.get()!=null) {
+				out.println(command.get());
 				out.flush();
+				if(command.get().startsWith("get")) {
+					BufferedReader in=new BufferedReader(new InputStreamReader(sck.getInputStream()));
+					String line=null;
+					while((line=in.readLine())!=null)
+						val.set(val.get()+line);
+					in.close();
+				}
+				command.set(null);
 			}
 			out.close();
 			sck.close();
@@ -122,4 +134,12 @@ public class SimulatorModel extends Observable {
 		return sol;
 	}
 
+	public double autopilot(String[] intr) {
+		Random r=new Random();
+		int port=r.nextInt(1001)+5000;
+		Simulator sim=new Simulator(port, this);
+		double retVal= MyInterpreter.interpret(intr);
+		sim.close();
+		return retVal;
+	}
 }
